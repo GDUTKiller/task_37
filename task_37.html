@@ -143,8 +143,49 @@
             $('.login').style.display = 'none';
             $('.mask').style.display = 'none';
         }
-        console.log($('.login').style.width)
-        console.log($('.login').offsetWidth)
+
+        var isDraging = false;
+        var mouseX;
+        var mouseY;
+        var loginOffsetLeft;
+        var loginOffsetTop;
+
+        //当浮出层头部收到鼠标按下事件时，记录鼠标按下的位置，浮出层的左位移，上位移
+        //
+        $('.login-header').onmousedown = function(e) {
+            var e = e || window.event;
+            isDraging = true;
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            loginOffsetLeft = $('.login').offsetLeft;
+            loginOffsetTop  = $('.login').offsetTop;
+            console.log(window.innerHeight);
+        }
+
+        $('.login-header').onmousemove = function(e) {
+            if(isDraging) {
+                var e = e || window.event;
+                var moveWidth  = e.clientX - mouseX;
+                var moveHeight = e.clientY - mouseY;
+                // var loginOffsetLeft = $('.login').offsetLeft;
+                // var loginOffsetTop = $('.login').offsetTop;
+                // console.log(e.clientX / document.body.clientWidth);
+                var a = ((loginOffsetLeft + moveWidth) / window.innerWidth)  * 100 + '%';
+                var b = ((loginOffsetTop + moveHeight) / window.innerHeight) * 100 + '%';
+                $('.login').style.left = a;
+                $('.login').style.top = b;
+            }
+        }
+
+        //鼠标从浮出层头部移出，拖放状态为false
+        $('.login-header').onmouseout = function() {
+            isDraging = false;
+        }
+
+        //鼠标从浮出层头部释放，拖放状态为false
+        document.onmouseup = function() {
+            isDraging = false;
+        }
     </script>
 </body>
 </html>
